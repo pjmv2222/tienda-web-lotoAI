@@ -1,0 +1,10 @@
+<div class="cart-container">
+    <h2>Tu Carrito</h2>
+    <ul>
+        <li *ngFor="let item of items">
+            {{ item.name }}
+        </li>
+    </ul>
+    <button (click)="limpiarCarrito()">Limpiar Carrito</button>
+    <button [disabled]="items.length === 0">Pagar</button>
+</div>

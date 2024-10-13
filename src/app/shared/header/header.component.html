@@ -1,0 +1,29 @@
+<header class="modulo-cabecera">
+    <div class="logo-container">
+        <img src="/images/lotoIA-LOGO.jpg" alt="LotoIA Logo" class="logo">
+    </div>
+    <div class="juegos-container">
+        <ul class="modulo-menu-juegos">
+            <li *ngFor="let juego of ['euromillones', 'primitiva', 'bonoloto', 'gordoPrimitiva', 'euroDreams', 'loteriaNacional']" class="item-menu-juegos {{juego}}">
+                <a href="#" class="link-cabecera-juego" [title]="'JUGAR ' + juego.toUpperCase()">
+                    <img class="logotipo-juego-cabecera web" [src]="'assets/img/' + juego + '.png'" [alt]="juego">
+                    <p class="bote-juego" [innerHTML]="formatearBote(botes[juego])"></p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="user-actions">
+        <button class="btn-entrar">Entrar</button>
+        <button class="btn-registro">REGISTRO</button>
+        <div class="idioma-selector">
+            <select id="changeLanguage" name="changeLanguage">
+                <option value="es" selected>Castellano</option>
+                <option value="ca">Català</option>
+                <option value="en">English</option>
+                <option value="eu">Euskera</option>
+                <option value="gl">Galego</option>
+                <option value="va">Valencià</option>
+            </select>
+        </div>
+    </div>
+</header>

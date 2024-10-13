@@ -1,0 +1,286 @@
+@charset "UTF-8";
+
+/* Estilos generales */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    font-family: Arial, sans-serif;
+}
+
+html, body, div, span, h1, h2, h3, h4, h5, h6, p, a, img, ul, li, form, label {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* Estilos de cabecera */
+header.modulo-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.logo-container {
+    flex: 0 0 auto;
+    margin-right: 10px;
+}
+
+.logo {
+    max-height: 80px;
+    width: auto;
+}
+
+.juegos-container {
+    flex: 1;
+    overflow-x: auto;
+}
+
+.modulo-menu-juegos {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.item-menu-juegos {
+    flex: 0 1 calc(14.28% - 10px); /* Para 7 elementos por fila */
+    margin: 5px;
+    text-align: center;
+}
+
+.link-cabecera-juego {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.link-cabecera-juego img {
+    height: 40px;
+    width: auto;
+    margin-bottom: 5px;
+}
+
+.bote-juego {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.miles {
+    font-size: 12px;
+    display: block;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.btn-entrar, .btn-registro {
+    padding: 8px 12px;
+    margin-left: 10px;
+    font-size: 14px;
+    color: white;
+    background-color: #007bff; /* Color de fondo azul, puedes ajustarlo según tus preferencias */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-entrar:hover, .btn-registro:hover {
+    background-color: #0056b3; /* Un tono más oscuro para el efecto hover */
+}
+
+/* Si quieres que el botón de registro tenga un color diferente, puedes especificarlo así: */
+.btn-registro {
+    background-color: #28a745; /* Color verde para el botón de registro */
+}
+
+.btn-registro:hover {
+    background-color: #218838; /* Un tono más oscuro para el efecto hover */
+}
+
+.idioma-selector {
+    margin-left: 10px;
+}
+
+/* Estilos específicos para juegos */
+.c-cabecera__juego--eurodreams {
+    border-bottom: 6px solid #6b3e98;
+    padding-bottom: 0 !important;
+}
+
+.c-cabecera__juego--eurodreams:hover {
+    background-image: linear-gradient(to top, rgba(107,62,152,0.1), #fff);
+    margin-bottom: 0;
+}
+
+.c-cabecera-juego__texto_topaz {
+    font-family: "PublicSans-SemiBold", Arial, sans-serif;
+    white-space: normal;
+}
+
+.c-cabecera-juego__bote_topaz--lnac {
+    padding-top: 15px !important;
+}
+
+.c-cabecera-juego__bote--eurodreams {
+    padding-top: 0;
+}
+
+.c-cabecera-juego__bote_topaz--eurodreams {
+    padding-top: 15px;
+}
+
+.c-cabecera-juego__titulo--eurodreams,
+.c-cabecera-juego__bote--eurodreams,
+.c-cabecera-juego__cantidad--eurodreams,
+.c-cabecera-juego__texto_topaz--eurodreams {
+    color: #6b3e98;
+}
+
+/* Utilidades */
+.esta-oculto {
+    display: none !important;
+}
+
+.white-space-normal {
+    white-space: normal !important;
+}
+
+/* Media queries */
+@media screen and (min-width: 1201px) {
+    .esta-oculto-pc {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    header.modulo-cabecera {
+        flex-wrap: wrap;
+        justify-content: center;
+        height: auto;
+        padding: 15px;
+        overflow: visible; /* Permite el desbordamiento en pantallas pequeñas */
+    }
+
+    .logo-container {
+        margin-right: 0;
+        margin-bottom: 15px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .juegos-container {
+        order: 3;
+        width: 100%;
+        margin: 15px 0;
+    }
+
+    .modulo-menu-juegos {
+        height: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .item-menu-juegos {
+        flex: 0 1 calc(25% - 10px); /* 4 elementos por fila */
+        margin: 5px;
+        min-width: 80px;
+    }
+
+    .user-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .idioma-selector {
+        margin-right: 0;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .btn-entrar, .btn-registro {
+        margin: 5px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .logo {
+        max-height: 60px;
+    }
+
+    .link-cabecera-juego img {
+        height: 30px;
+    }
+
+    .bote-juego {
+        font-size: 14px;
+    }
+
+    .miles {
+        font-size: 10px;
+    }
+
+    .btn-entrar, .btn-registro {
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .item-menu-juegos {
+        flex: 0 1 calc(50% - 10px); /* 2 elementos por fila */
+    }
+    
+    .user-actions {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .btn-entrar, .btn-registro, .idioma-selector {
+        margin: 5px;
+    }
+}
+
+/* Asegúrate de que el cuerpo y el html no tengan padding o margin innecesarios */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden; /* Evita el desplazamiento horizontal */
+}
+
+/* Estilos adicionales */
+.mensaje-error {
+    border: 2px solid #e42233 !important;
+}
+
+.oculto-elige8-reserva-espacio,
+.reserva-espacio {
+    visibility: hidden !important;
+}
+
+.ocultar-papelera-elige8-sencilla {
+    display: none !important;
+}
