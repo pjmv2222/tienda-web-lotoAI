@@ -80,7 +80,10 @@
               "buildTarget": "tienda-web-lotoAI:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "src/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -103,6 +106,15 @@
               "src/styles.css"
             ],
             "scripts": []
+          }
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "options": {
+            "browserTarget": "tienda-web-lotoAI:build",
+            "serverTarget": "tienda-web-lotoAI:server",
+            "routesFile": "src/routes.txt",
+            "renderTimeout": 60000
           }
         }
       }

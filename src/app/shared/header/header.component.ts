@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BotesService } from '../../services/botes.service';
+import { BotesService } from './botes.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,15 +7,17 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  botes: {[key: string]: number} = {};
+  botes: any = {};
+  algunValor: number | undefined;
 
-  constructor(private botesService: BotesService) { }
+  constructor(private botesService: BotesService) {}
 
   ngOnInit(): void {
     this.actualizarBotes();
+    this.algunValor = 1000000; // Inicializa con un valor adecuado
     setInterval(() => {
       this.actualizarBotes();
     }, 60000);
@@ -23,19 +25,25 @@ export class HeaderComponent implements OnInit {
 
   actualizarBotes(): void {
     this.botesService.getBotes().subscribe({
-      next: (data) => {
-        this.botes = data;
+      next: (data: any) => {
+        if (data && typeof data === 'object') {
+          this.botes = data;
+        } else {
+          console.error('Datos de botes inválidos', data);
+          this.botes = {};
+        }
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error al obtener los botes', error);
         this.botes = {};
       }
     });
   }
 
-  formatearBote(valor: number): string {
-    return valor >= 1000000 
-      ? `${Math.floor(valor / 1000000)}<span class="miles">MILLONES</span>` 
-      : `${valor.toLocaleString('es-ES')}<span class="miles">€</span>`;
+  formatearBote(bote: number | undefined): string {
+    if (bote === undefined || bote === null) {
+      return 'N/A'; // O cualquier valor por defecto que prefieras
+    }
+    return bote.toLocaleString('es-ES');
   }
 }
