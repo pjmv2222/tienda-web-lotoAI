@@ -1,0 +1,31 @@
+name: Update Botes
+
+on:
+  schedule:
+    - cron: '0 6 * * *'  # 6:00 UTC (8:00 hora española)
+  workflow_dispatch:
+
+jobs:
+  update-botes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          
+      - name: Install dependencies
+        run: npm install axios cheerio
+          
+      - name: Run scraper
+        run: npx ts-node src/scripts/scraper.ts
+        
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add src/assets/botes.json
+          git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
+          git push
