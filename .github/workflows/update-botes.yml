@@ -29,7 +29,7 @@ jobs:
           
       - name: Run scraper
         run: |
-          npx ts-node -P ./tsconfig.scraper.json src/scripts/scraper.ts
+          NODE_OPTIONS="--loader ts-node/esm" ts-node --transpileOnly --compilerOptions '{"module":"CommonJS"}' src/scripts/scraper.ts
         
       - name: Commit changes
         run: |
