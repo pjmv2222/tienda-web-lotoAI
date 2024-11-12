@@ -3,11 +3,15 @@ name: Update Botes
 on:
   schedule:
     - cron: '0 6 * * *'  # 6:00 UTC (8:00 hora española)
-  workflow_dispatch:
+  workflow_dispatch:      # Permite ejecución manual
+
+permissions:
+  contents: write        # Necesario para hacer commit y push
 
 jobs:
   update-botes:
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v2
       
@@ -17,7 +21,9 @@ jobs:
           node-version: '16'
           
       - name: Install dependencies
-        run: npm install axios cheerio
+        run: |
+          npm ci
+          npm install axios cheerio typescript ts-node
           
       - name: Run scraper
         run: npx ts-node src/scripts/scraper.ts
