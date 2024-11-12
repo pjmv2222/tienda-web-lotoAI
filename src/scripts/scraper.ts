@@ -1,5 +1,4 @@
 // src/scripts/scraper.ts
-
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
@@ -10,6 +9,10 @@ async function delay(ms: number): Promise<void> {
 
 async function formatearNumero(numero: string): Promise<string> {
     return numero.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+interface ConsoleMessage {
+    text: () => string;
 }
 
 async function scrapeBotes(): Promise<void> {
@@ -25,16 +28,16 @@ async function scrapeBotes(): Promise<void> {
         
         const botes = {
             primitiva: '0',
-            bonoloto: '',  // Valor vacío por defecto
+            bonoloto: '',
             euromillones: '0',
             gordo: '0',
-            nacional: '300000'  // Valor fijo para Lotería Nacional
+            nacional: '300000'
         };
 
         let datosRecopilados = false;
 
         // Tipado para el evento console
-        page.on('console', (msg: any) => {
+        page.on('console', (msg: ConsoleMessage) => {
             const text = msg.text();
             if (text.includes('JSON draw data')) {
                 const match = text.match(/gameId=([^;]+).*jackpot=(\d+|null)/);
@@ -78,7 +81,7 @@ async function scrapeBotes(): Promise<void> {
 
         console.log('Datos extraídos:', {
             primitiva: botes.primitiva + 'M €',
-            bonoloto: botes.bonoloto ? botes.bonoloto + 'M €' : '',  // String vacío si no hay bote
+            bonoloto: botes.bonoloto ? botes.bonoloto + 'M €' : '',
             euromillones: botes.euromillones + 'M €',
             gordo: botes.gordo + 'M €',
             nacional: formatearNumero(botes.nacional) + ' €\n1ER PREMIO A LA SERIE'
