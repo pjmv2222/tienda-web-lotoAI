@@ -1,8 +1,8 @@
 // src/scripts/scraper.ts
 
-import puppeteer from 'puppeteer';
-import * as fs from 'fs';
-import * as path from 'path';
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const path = require('path');
 
 async function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -33,7 +33,8 @@ async function scrapeBotes(): Promise<void> {
 
         let datosRecopilados = false;
 
-        page.on('console', msg => {
+        // Tipado para el evento console
+        page.on('console', (msg: any) => {
             const text = msg.text();
             if (text.includes('JSON draw data')) {
                 const match = text.match(/gameId=([^;]+).*jackpot=(\d+|null)/);
