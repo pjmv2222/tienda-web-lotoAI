@@ -1,7 +1,7 @@
 {
   "name": "tienda-web-loto-ai",
   "version": "0.0.0",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:tienda-web-lotoAI": "node dist/tienda-web-loto-ai/server/server.mjs",
-    "scrape": "ts-node --project tsconfig.json src/scripts/scraper.ts"
+    "scrape": "ts-node-esm --skipIgnore src/scripts/scraper.ts"
   },
   "private": true,
   "dependencies": {
