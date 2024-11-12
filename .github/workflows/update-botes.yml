@@ -24,12 +24,14 @@ jobs:
         run: |
           npm ci
           npm install -g typescript
-          npm install -g ts-node
           npm install puppeteer
           
-      - name: Run scraper
+      - name: Compile TypeScript
         run: |
-          TS_NODE_COMPILER_OPTIONS='{"module":"commonjs"}' ts-node --prefer-ts-exts --transpile-only src/scripts/scraper.ts
+          tsc src/scripts/scraper.ts --outDir dist --esModuleInterop true
+          
+      - name: Run scraper
+        run: node dist/scripts/scraper.js
         
       - name: Commit changes
         run: |
