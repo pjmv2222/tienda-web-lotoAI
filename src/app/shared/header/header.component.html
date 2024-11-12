@@ -1,13 +1,14 @@
 <header class="modulo-cabecera">
     <div class="logo-container">
-        <img src="/images/lotoIA-LOGO.jpg" alt="LotoIA Logo" class="logo">
+        <img src="/assets/img/lotoIA-LOGO.jpg" alt="LotoIA Logo" class="logo">
     </div>
     <div class="juegos-container">
         <ul class="modulo-menu-juegos">
             <li *ngFor="let juego of ['euromillones', 'primitiva', 'bonoloto', 'gordoPrimitiva', 'euroDreams', 'loteriaNacional']" class="item-menu-juegos {{juego}}">
                 <a href="#" class="link-cabecera-juego" [title]="'JUGAR ' + juego.toUpperCase()">
-                    <img class="logotipo-juego-cabecera web" [src]="'assets/img/' + juego + '.png'" [alt]="juego">
-                    <p class="bote-juego" [innerHTML]="formatearBote(botes[juego])"></p>
+                    <img class="logotipo-juego-cabecera web" [src]="getImageUrl(juego)" [alt]="juego">
+                    <p class="bote-juego" *ngIf="botes[juego]" [innerHTML]="formatearBote(botes[juego])"></p>
+                    <p class="bote-juego" *ngIf="!botes[juego]">Cargando...</p>
                 </a>
             </li>
         </ul>
