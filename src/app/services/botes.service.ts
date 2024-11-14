@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, interval } from 'rxjs';
-import { catchError, retryWhen, delay, take, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface Botes {
@@ -21,11 +21,7 @@ export class BotesService {
   constructor(private http: HttpClient) { }
 
   getBotes(): Observable<Botes> {
-    // Intentar cada 5 segundos, hasta 3 intentos
-    return interval(5000).pipe(
-      take(3),
-      switchMap(() => this.http.get<Botes>(this.apiUrl)),
-      retryWhen(errors => errors.pipe(delay(5000))),
+    return this.http.get<Botes>('assets/botes.json').pipe(
       catchError(() => of({
         primitiva: '0',
         bonoloto: '0',

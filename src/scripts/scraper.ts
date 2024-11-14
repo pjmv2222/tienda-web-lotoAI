@@ -1,7 +1,9 @@
 // src/scripts/scraper.ts
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-const path = require('path');
+
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import * as fs from 'fs';
+import * as path from 'path';
 
 async function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -15,93 +17,36 @@ interface ConsoleMessage {
     text: () => string;
 }
 
-async function scrapeBotes(): Promise<void> {
+async function scrapeBotes() {
     try {
-        console.log('Iniciando scraping...');
-        
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox']
-        });
-        
-        const page = await browser.newPage();
+        const response = await axios.get('https://www.loteriasyapuestas.es');
+        const $ = cheerio.load(response.data);
         
         const botes = {
-            primitiva: '0',
+            primitiva: '',
             bonoloto: '',
-            euromillones: '0',
-            gordo: '0',
-            nacional: '300000'
+            euromillones: '',
+            gordo: ''
         };
 
-        let datosRecopilados = false;
-
-        // Tipado para el evento console
-        page.on('console', (msg: ConsoleMessage) => {
-            const text = msg.text();
-            if (text.includes('JSON draw data')) {
-                const match = text.match(/gameId=([^;]+).*jackpot=(\d+|null)/);
-                if (match) {
-                    const [_, gameId, jackpot] = match;
-                    datosRecopilados = true;
-
-                    switch(gameId) {
-                        case 'LAPR':
-                            if (jackpot && jackpot !== 'null') {
-                                botes.primitiva = (parseInt(jackpot) / 1000000).toFixed(1);
-                            }
-                            break;
-                        case 'EMIL':
-                            if (jackpot && jackpot !== 'null') {
-                                botes.euromillones = (parseInt(jackpot) / 1000000).toFixed(1);
-                            }
-                            break;
-                        case 'ELGR':
-                            if (jackpot && jackpot !== 'null') {
-                                botes.gordo = (parseInt(jackpot) / 1000000).toFixed(1);
-                            }
-                            break;
-                        case 'BONO':
-                            if (jackpot && jackpot !== 'null') {
-                                botes.bonoloto = (parseInt(jackpot) / 1000000).toFixed(1);
-                            }
-                            break;
-                        // Eliminamos el caso LNAC ya que usamos valor fijo
-                    }
-                }
+        // Lógica de scraping
+        $('.bote-cantidad').each((i, element) => {
+            const texto = $(element).text().trim();
+            const cantidad = texto.replace(/[^0-9]/g, '');
+            
+            if ($(element).closest('.primitiva').length) {
+                botes.primitiva = cantidad;
             }
+            // Añadir más juegos
         });
 
-        await page.goto('https://www.loteriasyapuestas.es/es', {
-            waitUntil: 'networkidle0',
-            timeout: 30000
-        });
-
-        await delay(5000);
-
-        console.log('Datos extraídos:', {
-            primitiva: botes.primitiva + 'M €',
-            bonoloto: botes.bonoloto ? botes.bonoloto + 'M €' : '',
-            euromillones: botes.euromillones + 'M €',
-            gordo: botes.gordo + 'M €',
-            nacional: formatearNumero(botes.nacional) + ' €\n1ER PREMIO A LA SERIE'
-        });
+        const outputPath = path.join(process.cwd(), 'src', 'assets', 'botes.json');
+        fs.writeFileSync(outputPath, JSON.stringify(botes, null, 2));
         
-        const outputPath = path.join(process.cwd(), 'src', 'assets');
-        if (!fs.existsSync(outputPath)) {
-            fs.mkdirSync(outputPath, { recursive: true });
-        }
-        
-        fs.writeFileSync(
-            path.join(outputPath, 'botes.json'),
-            JSON.stringify(botes, null, 2)
-        );
-        
-        await browser.close();
-        console.log('Scraping completado');
+        console.log('Botes actualizados correctamente');
         
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al scrapear los botes:', error);
         process.exit(1);
     }
 }

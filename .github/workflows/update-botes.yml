@@ -26,8 +26,9 @@ jobs:
           npm install axios cheerio
           
       - name: Build TypeScript
-        run: npx tsc src/scripts/scraper.ts
-
+        run: |
+          npx tsc src/scripts/scraper.ts --outDir ./src/scripts
+          
       - name: Run scraper
         run: node src/scripts/scraper.js
         
