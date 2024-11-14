@@ -25,13 +25,21 @@ jobs:
           npm install typescript
           npm install axios cheerio
           
+      - name: Debug directory
+        run: |
+          pwd
+          ls -la
+          
       - name: Build TypeScript
         run: |
           mkdir -p dist/scripts
-          npx tsc src/scripts/scraper.ts --outDir dist/scripts
+          npx tsc src/scripts/scraper.ts --outDir dist/scripts --rootDir src
+          ls -la dist/scripts
           
       - name: Run scraper
-        run: node dist/scripts/scraper.js
+        run: |
+          ls -la dist/scripts
+          node dist/scripts/scraper.js
         
       - name: Commit changes
         run: |
