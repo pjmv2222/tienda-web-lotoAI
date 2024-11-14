@@ -6,12 +6,11 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write  # Necesario para poder hacer commits
 
 jobs:
   update-botes:
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v4
       
@@ -24,14 +23,13 @@ jobs:
         run: |
           npm ci
           npm install typescript
-          npm install puppeteer
+          npm install axios cheerio
           
-      - name: Build
-        run: |
-          npx tsc src/scripts/scraper.ts --outDir dist
-          
+      - name: Build TypeScript
+        run: npx tsc src/scripts/scraper.ts
+
       - name: Run scraper
-        run: node dist/scripts/scraper.js
+        run: node src/scripts/scraper.js
         
       - name: Commit changes
         run: |
