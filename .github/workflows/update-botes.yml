@@ -27,11 +27,11 @@ jobs:
           
       - name: Build TypeScript
         run: |
-          mkdir -p src/scripts
-          npx tsc src/scripts/scraper.ts --outDir ./src/scripts
+          mkdir -p dist/scripts
+          npx tsc src/scripts/scraper.ts --outDir dist/scripts
           
       - name: Run scraper
-        run: node src/scripts/scraper.js
+        run: node dist/scripts/scraper.js
         
       - name: Commit changes
         run: |
