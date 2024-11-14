@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # Necesario para poder hacer commits
+  contents: write
 
 jobs:
   update-botes:
@@ -27,6 +27,7 @@ jobs:
           
       - name: Build TypeScript
         run: |
+          mkdir -p src/scripts
           npx tsc src/scripts/scraper.ts --outDir ./src/scripts
           
       - name: Run scraper
