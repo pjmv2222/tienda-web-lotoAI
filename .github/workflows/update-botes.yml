@@ -25,29 +25,37 @@ jobs:
           npm install -g typescript
           npm install axios cheerio
           
-      - name: Debug Pre-Build
+      - name: Verify TypeScript installation
         run: |
-          echo "Current directory:"
-          pwd
-          echo "Directory contents:"
-          ls -la
-          echo "Source directory contents:"
-          ls -la src/scripts/
+          tsc --version
+          which tsc
+          
+      - name: Create directories
+        run: |
+          mkdir -p dist/scripts
+          echo "Created dist directory structure:"
+          ls -la dist/
           
       - name: Build TypeScript
         run: |
-          echo "Compiling TypeScript..."
-          tsc src/scripts/scraper.ts --outDir ./dist/scripts
-          echo "Compilation complete. Checking output:"
+          echo "TypeScript compilation starting..."
+          tsc --project tsconfig.json
+          echo "TypeScript compilation finished"
+          echo "Compiled files in dist/scripts:"
           ls -la dist/scripts/
           
       - name: Run scraper
         run: |
-          echo "Current location:"
-          pwd
-          echo "Running scraper from:"
+          echo "Working directory: $(pwd)"
+          echo "Contents of dist/scripts:"
           ls -la dist/scripts/
-          node ./dist/scripts/scraper.js
+          if [ -f "dist/scripts/scraper.js" ]; then
+            echo "Scraper file exists, running..."
+            node dist/scripts/scraper.js
+          else
+            echo "Error: scraper.js not found"
+            exit 1
+          fi
         
       - name: Commit changes
         if: success()
