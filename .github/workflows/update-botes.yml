@@ -22,20 +22,20 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install -g typescript
+          npm install typescript
           npm install axios cheerio
           
       - name: Debug Environment
         run: |
           echo "=== Estructura de directorios ==="
           pwd
-          tree /a /f
+          ls -la
           
-          echo "=== Archivos TypeScript disponibles ==="
-          dir /s *.ts
+          echo "=== Archivos TypeScript ==="
+          find . -name "*.ts"
           
           echo "=== Versión de TypeScript ==="
-          tsc --version
+          npx tsc --version
           
       - name: Build TypeScript
         run: |
@@ -64,4 +64,4 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
-  # Verificación actualización archivo en el repositorio de GitHub        
+  # Verificación actualización archivo en el repositorio de GitHub
