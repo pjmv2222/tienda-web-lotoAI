@@ -31,7 +31,7 @@ jobs:
           pwd
           ls -R
           
-          echo "=== Archivos TypeScript ==="
+          echo "=== Archivos TypeScript disponibles ==="
           find . -type f -name "*.ts"
           
           echo "=== Versión de TypeScript ==="
@@ -46,19 +46,29 @@ jobs:
           tsc src/scripts/scraper.ts --outDir ./dist/scripts --rootDir src --listFiles --verbose
           
           echo "=== Resultado de la compilación ==="
-          dir /s dist\scripts\*.js
-          
+          find . -type f -name "*.js"
       - name: Verify Build
         run: |
           echo "=== Verificando archivo compilado ==="
-          if exist "dist\scripts\scraper.js" (
+          if [ -f "./dist/scripts/scraper.js" ]; then
             echo "Archivo encontrado"
-            type dist\scripts\scraper.js
-          ) else (
+            cat ./dist/scripts/scraper.js
+          else
             echo "ERROR: Archivo no encontrado"
             exit 1
-          )
+          fi
           
+      - name: Run scraper
+        run: |
+          if [ -f "./dist/scripts/scraper.js" ]; then
+            node ./dist/scripts/scraper.js
+          else
+            echo "Build failed - scraper.js not found"
+            echo "Directory contents:"
+            ls -R ./dist
+            exit 1
+          fi
+
       - name: Commit changes
         if: success()
         run: |
