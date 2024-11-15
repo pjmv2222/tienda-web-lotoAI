@@ -22,53 +22,33 @@ jobs:
       - name: Install dependencies
         run: |
           npm ci
-          npm install typescript
+          npm install -g typescript
           npm install axios cheerio
           
       - name: Debug Environment
         run: |
-          echo "=== Estructura de directorios ==="
+          echo "=== Directorio actual ==="
           pwd
-          ls -R
           
-          echo "=== Archivos TypeScript disponibles ==="
-          find . -type f -name "*.ts"
-          
-          echo "=== Versión de TypeScript ==="
-          npx tsc --version
-          
-          echo "=== Contenido del directorio actual ==="
+          echo "=== Contenido del directorio ==="
           ls -la
           
-      - name: Build TypeScript
-        run: |
-          echo "=== Iniciando compilación ==="
-          tsc src/scripts/scraper.ts --outDir ./dist/scripts --rootDir src --listFiles --verbose
+          echo "=== Archivos TypeScript ==="
+          find . -name "*.ts"
           
-          echo "=== Resultado de la compilación ==="
-          find . -type f -name "*.js"
-      - name: Verify Build
-        run: |
-          echo "=== Verificando archivo compilado ==="
-          if [ -f "./dist/scripts/scraper.js" ]; then
-            echo "Archivo encontrado"
-            cat ./dist/scripts/scraper.js
-          else
-            echo "ERROR: Archivo no encontrado"
-            exit 1
-          fi
+          echo "=== Versiones instaladas ==="
+          node --version
+          tsc --version
           
-      - name: Run scraper
+          echo "=== Estructura del proyecto ==="
+          ls -R src/
+          
+      - name: Build and Run
         run: |
-          if [ -f "./dist/scripts/scraper.js" ]; then
-            node ./dist/scripts/scraper.js
-          else
-            echo "Build failed - scraper.js not found"
-            echo "Directory contents:"
-            ls -R ./dist
-            exit 1
-          fi
-
+          mkdir -p dist/scripts
+          tsc src/scripts/scraper.ts --outDir dist/scripts
+          node dist/scripts/scraper.js
+          
       - name: Commit changes
         if: success()
         run: |
@@ -77,4 +57,4 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
-  # Nueva Verificación actualización archivo en el repositorio de GitHub
+  # Nueva Verificación actualización -2- archivo en el repositorio de GitHub
