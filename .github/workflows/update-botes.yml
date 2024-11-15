@@ -27,11 +27,13 @@ jobs:
           
       - name: Build TypeScript
         run: |
+          echo '{"compilerOptions":{"module":"ES2020","target":"ES2020","moduleResolution":"node","esModuleInterop":true,"outDir":"dist/scripts"}}' > tsconfig.json
           mkdir -p dist/scripts
-          tsc src/scripts/scraper.ts --outDir dist/scripts --module ES2020 --moduleResolution node --target ES2020
+          npx tsc src/scripts/scraper.ts
           
       - name: Run scraper
-        run: node dist/scripts/scraper.js
+        run: |
+          node --experimental-modules dist/scripts/scraper.js
         
       - name: Commit changes
         if: success()
@@ -41,4 +43,3 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
-          
