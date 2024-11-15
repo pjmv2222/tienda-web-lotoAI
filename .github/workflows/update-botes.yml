@@ -29,13 +29,16 @@ jobs:
         run: |
           echo "=== Estructura de directorios ==="
           pwd
-          ls -la
+          ls -R
           
           echo "=== Archivos TypeScript ==="
-          find . -name "*.ts"
+          find . -type f -name "*.ts"
           
           echo "=== Versión de TypeScript ==="
           npx tsc --version
+          
+          echo "=== Contenido del directorio actual ==="
+          ls -la
           
       - name: Build TypeScript
         run: |
@@ -64,4 +67,4 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
-  # Verificación actualización archivo en el repositorio de GitHub
+  # Nueva Verificación actualización archivo en el repositorio de GitHub
