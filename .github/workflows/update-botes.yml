@@ -27,19 +27,24 @@ jobs:
           
       - name: Debug Environment
         run: |
+          # Verificar directorio actual
           echo "=== Directorio actual ==="
           pwd
           
+          # Listar archivos
           echo "=== Contenido del directorio ==="
           ls -la
           
+          # Buscar archivos TypeScript
           echo "=== Archivos TypeScript ==="
-          find . -name "*.ts"
+          find . -type f -name "*.ts"
           
-          echo "=== Versiones instaladas ==="
+          # Verificar versiones
+          echo "=== Versiones de Node y TypeScript ==="
           node --version
           tsc --version
           
+          # Verificar estructura src
           echo "=== Estructura del proyecto ==="
           ls -R src/
           
@@ -57,4 +62,4 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
-  # Nueva Verificación actualización -2- archivo en el repositorio de GitHub
+  # Nueva Verificación actualización -3- archivo en el repositorio de GitHub
