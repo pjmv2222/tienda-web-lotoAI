@@ -25,35 +25,14 @@ jobs:
           npm install -g typescript
           npm install axios cheerio
           
-      - name: Debug Environment
-        run: |
-          # Verificar directorio actual
-          echo "=== Directorio actual ==="
-          pwd
-          
-          # Listar archivos
-          echo "=== Contenido del directorio ==="
-          ls -la
-          
-          # Buscar archivos TypeScript
-          echo "=== Archivos TypeScript ==="
-          find . -type f -name "*.ts"
-          
-          # Verificar versiones
-          echo "=== Versiones de Node y TypeScript ==="
-          node --version
-          tsc --version
-          
-          # Verificar estructura src
-          echo "=== Estructura del proyecto ==="
-          ls -R src/
-          
-      - name: Build and Run
+      - name: Build TypeScript
         run: |
           mkdir -p dist/scripts
-          tsc src/scripts/scraper.ts --outDir dist/scripts
-          node dist/scripts/scraper.js
+          tsc src/scripts/scraper.ts --outDir dist/scripts --module ES2020 --moduleResolution node --target ES2020
           
+      - name: Run scraper
+        run: node dist/scripts/scraper.js
+        
       - name: Commit changes
         if: success()
         run: |
@@ -62,4 +41,4 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
-  # Nueva Verificación actualización -3- archivo en el repositorio de GitHub
+          
