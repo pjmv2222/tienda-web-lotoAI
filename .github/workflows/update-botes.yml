@@ -64,3 +64,4 @@ jobs:
           git add src/assets/botes.json
           git commit -m "Actualizar botes [skip ci]" || echo "No changes to commit"
           git push
+  # Verificación actualización archivo en el repositorio de GitHub        
